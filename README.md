@@ -221,7 +221,7 @@ const UploadModal = ({onClose, isOpen}) => {
                                 <div className='drag-drop h-full' onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave} setIsDragOver={isDragOver}>
                                    <div className='flex flex-col items-center'>
                                         <MdPhoto className="text-6xl"/>
-                                        <p>Drag a Photo Here</p>
+                                        <p>Drag a Image Here</p>
                                     </div> 
                                     <label htmlFor='file-upload' className='custom-file-upload' accept='image/*'>Select from Computer</label>
                                     <input type="file" id="file-upload" accept='image/*' onChange={handleOnChange}/>
@@ -277,6 +277,14 @@ input[type="file"]{
     display: none;
 }
 ```
-- The `UploadModal` component creates a window that is overlaid on primary content using the `Modal` component from Chakra UI.
+- The `UploadModal` component creates a window that is overlaid on primary content using the `Modal` component from Chakra UI. (https://chakra-ui.com/docs/components/modal/usage#make-modal-vertically-centered)
 - It uses the `onClose` and `isOpen` to open/close the Modal 
-- `<ModalOverlay/>` 
+- The `<ModalOverlay/>` component dims the stuff behind the Modal and if the overlay is clicked it closes the Modal
+- The `<ModalBody>` is a  wrapper that houses the modal's main content
+- `{}` can be used to run javascript code
+-  The `useState()` hook is used to keep track of variables/state
+-  The `file` variable is used to store the file and `isDragOver` is a flag to know if the dragging of file is over
+-  The `{!file && ....}` is used to display the content after && ( the html code) so if there is no file stored (!file) it displays the content where you uplode the picture via drag and drop or upload through File Explorer
+- The `div` has `onDrop`, `onDragOver`, `onDragLeave` and `setIsDragOver` to handle the drag and drop of a Image
+- The `input` has `onChange` which handles the upload of the image
+- The `{file && ....}` is used to display the image if the image is uploaded.   
