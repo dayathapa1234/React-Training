@@ -287,4 +287,11 @@ input[type="file"]{
 -  The `{!file && ....}` is used to display the content after && ( the html code) so if there is no file stored (!file) it displays the content where you uplode the picture via drag and drop or upload through File Explorer
 - The `div` has `onDrop`, `onDragOver`, `onDragLeave` and `setIsDragOver` to handle the drag and drop of a Image
 - The `input` has `onChange` which handles the upload of the image
-- The `{file && ....}` is used to display the image if the image is uploaded.   
+- The `{file && ....}` is used to display the image if the image is uploaded.
+
+### When the button is pressed 
+![image](https://github.com/dayathapa1234/React-Training/assets/60889983/7672f084-61fd-4c21-b226-84b69ec4ef96)
+
+### When the image is uploaded
+![image](https://github.com/dayathapa1234/React-Training/assets/60889983/5b9af934-f0a9-4e29-a5f7-11df6a086818)
+
