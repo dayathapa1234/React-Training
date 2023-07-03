@@ -1,4 +1,4 @@
-# React-Training
+# React-Guide
 
 ## Creating a React Application
 Creating a react application in the current folder:
@@ -98,3 +98,185 @@ export default App;
 
 ## Button Component
 
+```jsx
+import React from "react";
+import './Button.css'
+import {useDisclosure} from '@chakra-ui/react'
+import UploadModal from "../Upload/UploadModal";
+
+const Button = props => {
+
+  const {isOpen, onOpen, onClose} = useDisclosure();
+
+  const onClick = () => {
+    onOpen();
+  };
+
+  return (
+    <div>
+      <button onClick={onClick} className="button">
+        Click to Upload Pictures
+      </button>
+      <UploadModal onClose={onClose} isOpen={isOpen}/>
+    </div> 
+  );
+}
+
+export default Button;
+```
+```css
+.button {
+  background: linear-gradient(to bottom right,#6495ed  , #4169e1 );
+  border: 0;
+  border-radius: 12px;
+  color: #FFFFFF;
+  cursor: pointer;
+  display: inline-block;
+  font-family: -apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  font-size: 25px;
+  font-weight: 500;
+  line-height: 2.5;
+  outline: transparent;
+  padding: 0 1rem;
+  text-align: center;
+  text-decoration: none;
+  transition: box-shadow .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  white-space: nowrap;
+}
+
+.button:not([disabled]):focus {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem #add8e6 , .125rem .125rem 1rem #a1caf1;
+}
+
+.button:not([disabled]):hover {
+  box-shadow: 0 0 .25rem rgba(0, 0, 0, 0.5), -.125rem -.125rem 1rem #add8e6 , .125rem .125rem 1rem #a1caf1;
+}
+```
+- `useDisclosure()` is a hook from Chakra-UI, it is used to handle common open, close, or toggle scenarios.
+- When the `button` is clicked the `onClick` event triggers a function call `{onClick}`
+- When the function `onClick` is called it calls another function `onOpen()` which sets `isOpen` to true
+- The `<UploadModal/>` component is passes the `onClose` and `isOpen` value and uses it to know the state of button press to open/close the Modal 
+
+![image](https://github.com/dayathapa1234/React-Training/assets/60889983/a10e8873-bd2b-4f62-93b4-558c6203a912)
+
+## Upload Modal
+```jsx
+import { Modal, ModalBody, ModalContent, ModalOverlay } from '@chakra-ui/react'
+import React, { useState } from 'react'
+import {MdPhoto} from 'react-icons/md';
+import './UploadModal.css';
+const UploadModal = ({onClose, isOpen}) => {
+    const [file, setFile] = useState();
+    const [isDragOver, setIsDragOver] = useState();
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        const droppedFile = e.dataTransfer.files[0];
+        if (droppedFile.type.startsWith("image/")){
+            setFile(droppedFile);
+        }else{
+            setFile(null);
+            alert("Please Select a Image");
+        }
+    }
+
+    const handleDragOver = (e) =>{
+        e.preventDefault();
+        e.dataTransfer.dropEffect="copy";
+        setIsDragOver(true);
+    }
+
+    const handleDragLeave = () => {
+        setIsDragOver(false);
+    }
+
+    const handleOnChange = (e) => {
+        e.preventDefault();
+        const file = e.target.files[0];
+        if (file && file.type.startsWith("image/")){
+            setFile(file);
+        }else{
+            setFile(null);
+            alert("Please Select a Image");
+        }
+    }
+
+
+  return (
+    <div>
+        <Modal size={"4xl"} onClose={onClose} isOpen={isOpen} isCentered>
+            <ModalOverlay/>
+            <ModalContent>
+                <div className='flex items-center justify-center py-1 font-bold text-3xl text-gray-500'>
+                    Upload a Picture
+                </div>
+                <hr/>
+                <ModalBody>
+                    <div className='h-[70vh] flex justify-center'>
+                        <div className='w-[50%] flex flex-col justify-center'>
+                            {!file &&
+                                <div className='drag-drop h-full' onDrop={handleDrop} onDragOver={handleDragOver} onDragLeave={handleDragLeave} setIsDragOver={isDragOver}>
+                                   <div className='flex flex-col items-center'>
+                                        <MdPhoto className="text-6xl"/>
+                                        <p>Drag a Photo Here</p>
+                                    </div> 
+                                    <label htmlFor='file-upload' className='custom-file-upload' accept='image/*'>Select from Computer</label>
+                                    <input type="file" id="file-upload" accept='image/*' onChange={handleOnChange}/>
+                                </div>
+                            }
+                            {file && 
+                                <img className='max-h-full' src={URL.createObjectURL(file)} alt=''/>
+                            }
+                        </div>
+                    </div>
+                </ModalBody>
+            </ModalContent>    
+        </Modal>
+    </div>
+  )
+}
+
+export default UploadModal
+```
+
+```css
+.drag-drop{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    font-size: 1.5rem;
+    color: #999;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.drag-drop p{
+    margin: 0 0 1rem;
+}
+
+.custom-file-upload{
+    padding: .5rem 1rem;
+    font-weight: 600;
+    color: white;
+    background-color: #3897f0;
+    border: #3897f0;
+    cursor: pointer;
+}
+
+.custom-file-upload:hover{
+    background-color: #2684f0;
+    border-color: #2684f0;
+}
+
+input[type="file"]{
+    display: none;
+}
+```
+- The `UploadModal` component creates a window that is overlaid on primary content using the `Modal` component from Chakra UI.
+- It uses the `onClose` and `isOpen` to open/close the Modal 
+- `<ModalOverlay/>` 
